@@ -8,6 +8,14 @@
     - 'overlay-apps'
   ignore_errors: true
 
+# ansible docker module pull image exists bug, use command pull instead
+
+- name: "docker pull [swarm] images."
+  command: docker pull {{item}}
+  with_items:
+    - 'swarm:latest'
+  ignore_errors: true
+
 - name: "docker run swarm-master container. "
   docker:
     name: swarm-master

@@ -1,10 +1,20 @@
 ---
 # tasks file for dnswall
+
+# ansible docker module pull image exists bug, use command pull instead
+
+- name: "docker pull [dnswall-daemon, dnswall-agent] images."
+  command: docker pull {{item}}
+  with_items:
+    - 'coding4m/dnswall-daemon'
+    - 'coding4m/dnswall-agent'
+  ignore_errors: true
+
 - name: "docker run dnswall-daemon container. "
   docker:
     name: dnswall-daemon
     image: coding4m/dnswall-daemon
-    pull: always
+#    pull: always
     state: reloaded
     restart_policy: always
     ports:
@@ -12,16 +22,16 @@
     - "53:53/tcp"
     volumes:
     - /etc/localtime:/etc/localtime
-    command: -backend {{ backend }}
+    command: -backend {{ backend_ops }} --patterns {{ dnswall_patterns }}
 
 
 - name: "docker run dnswall-agent container. "
   docker:
     name: dnswall-agent
     image: coding4m/dnswall-agent
-    pull: always
+#    pull: always
     state: reloaded
     restart_policy: always
     volumes:
     - /etc/localtime:/etc/localtime
-    command: -backend {{ backend }} -docker-url {{ docker_url }}
+    command: -backend {{ backend_ops }} -docker-url {{ docker_url }}
