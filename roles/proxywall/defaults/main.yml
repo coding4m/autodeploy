@@ -1,7 +1,5 @@
 ---
 # defaults file for proxywall
----
-# defaults file for dnswall
 
 etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + etcd_client_iface]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
 
