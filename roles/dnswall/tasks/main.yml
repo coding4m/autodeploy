@@ -3,13 +3,13 @@
 - name: "docker run dnswall-daemon container. "
   docker:
     name: dnswall-daemon
-    image: coding4m/dnswall-daemon:latest
+    image: coding4m/dnswall-daemon
     pull: always
     state: reloaded
     restart_policy: always
     ports:
-    - "{{docker_bridge_ip}}:53:53/udp"
-    - "{{docker_bridge_ip}}:53:53/tcp"
+    - "53:53/udp"
+    - "53:53/tcp"
     volumes:
     - /etc/localtime:/etc/localtime
     command: -backend {{ backend }}
@@ -18,11 +18,11 @@
 - name: "docker run dnswall-agent container. "
   docker:
     name: dnswall-agent
-    image: coding4m/dnswall-agent:latest
+    image: coding4m/dnswall-agent
     pull: always
     state: reloaded
     restart_policy: always
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock:ro
+    - /var/run/docker.sock:/var/run/docker.sock
     - /etc/localtime:/etc/localtime
-    command: -backend {{ backend }}
+    command: -backend {{ backend }} -docker-url {{ docker_url }}

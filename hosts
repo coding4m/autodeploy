@@ -7,6 +7,8 @@
 docker_iface=em1
 docker_port=2375
 
+dnswall_patterns=workplus.local
+
 [etcd]
 172.16.1.21
 172.16.1.22

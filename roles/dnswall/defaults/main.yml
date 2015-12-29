@@ -1,3 +1,8 @@
 ---
 # defaults file for dnswall
-backend: "etcd://{{docker_cluster[:-1]}}/dnswall?pattern=workplus.local&pattern=workapps.local"
+
+etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + etcd_client_iface]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
+
+docker_url : "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['docker_iface']]['ipv4']['address'] }}:{{ hostvars[inventory_hostname]['docker_port'] }}"
+backend_patterns: "{% for pattern in hostvars[inventory_hostname]['dnswall_patterns'].split(',') %}{{ 'pattern=%s&'|format(pattern)}}{% endfor %}"
+backend: "{{etcd_cluster[:-1]}}/dnswall?{{backend_patterns}}"
