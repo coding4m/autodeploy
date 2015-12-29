@@ -1,0 +1,44 @@
+---
+# tasks file for docker-swarm-manager
+
+- name: "docker run swarm container[master=true]. "
+  docker:
+    name: swarm-master
+    image: swarm:latest
+#    pull: always
+    state: reloaded
+    restart_policy: always
+    ports:
+    - "{{swarm_port}}:2375"
+    volumes:
+    - /etc/localtime:/etc/localtime
+    command: manage --addr {{swarm_addr}} {{swarm_cluster}}
+
+#- name: "docker run rethinkdb container. "
+#  docker:
+#    name: shipyard-rethinkdb
+#    image: rethinkdb:latest
+#    pull: always
+#    state: reloaded
+#    restart_policy: always
+#    volumes:
+#    - /etc/localtime:/etc/localtime
+#
+#- name: "docker run shipyard container. "
+#  docker:
+#    name: shipyard-controller
+#    image: shipyard/shipyard:latest
+#    pull: always
+#    state: reloaded
+#    restart_policy: always
+#    links:
+#    - "swarm-master:swarm"
+#    - "shipyard-rethinkdb:rethinkdb"
+#    ports:
+#    - "{{swarm_admin_port}}:8080"
+#    env:
+#      VHOST: boss.workplus.io
+#      VPORT: "8080"
+#    volumes:
+#    - /etc/localtime:/etc/localtime
+#    command: -D server -d tcp://swarm:2375

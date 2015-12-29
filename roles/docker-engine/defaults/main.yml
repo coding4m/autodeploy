@@ -1,0 +1,16 @@
+---
+
+etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + etcd_client_iface]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
+
+docker_host: "{{ hostvars[inventory_hostname]['ansible_' + docker_iface]['ipv4']['address'] }}"
+docker_addr: "{{ docker_host }}:{{ docker_port }}"
+docker_cluster: "--cluster-store={{etcd_cluster[:-1]}} --cluster-advertise={{docker_addr}}"
+
+docker_labels: '{% for key,value in hostvars[inventory_hostname].get("labels", {}).items() %}{{ "--label %s=%s "|format(key,value)}}{% endfor %}'
+docker_opts: ' -H tcp://{{docker_addr}} -H unix:///var/run/docker.sock --bip {{ docker_bridge_network }} --dns {{ docker_bridge_network.split("/")[0] }} {{docker_cluster}} {{docker_labels}} --selinux-enabled '
+
+os_version: "{{ ansible_lsb.release if ansible_lsb is defined else ansible_distribution_version }}"
+os_version_major: "{{ os_version | regex_replace('^([0-9]+)[^0-9]*.*', '\\\\1') }}"
+
+docker_create_group: true
+docker_yum_repo: "https://yum.dockerproject.org/repo/main/{{ ansible_distribution | lower }}/{{ os_version_major }}"

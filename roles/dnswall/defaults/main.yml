@@ -1,0 +1,3 @@
+---
+# defaults file for dnswall
+backend: "etcd://{{docker_cluster[:-1]}}/dnswall?pattern=workplus.local&pattern=workapps.local"

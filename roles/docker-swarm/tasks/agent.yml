@@ -1,0 +1,11 @@
+---
+- name: "docker run swarm agent container"
+  docker:
+    name: swarm-agent
+    image: swarm:latest
+#    pull: always
+    state: reloaded
+    restart_policy: always
+    volumes:
+    - /etc/localtime:/etc/localtime
+    command: join --addr {{swarm_docker}} {{swarm_cluster}}

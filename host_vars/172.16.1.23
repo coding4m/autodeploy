@@ -1,0 +1,6 @@
+---
+labels:
+  zone: GZ
+  region: backend
+  storage: sata
+  bandwidth: 1m

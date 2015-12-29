@@ -1,0 +1,7 @@
+---
+
+- include: master.yml
+  when: swarm_master == "true"
+
+- include: agent.yml
+  when: swarm_agent == "true"

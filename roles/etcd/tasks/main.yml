@@ -1,0 +1,45 @@
+---
+# tasks file for etcd
+
+
+- name: install tar
+  yum: name=tar state=present
+
+- name: download etcd
+  get_url: url=https://github.com/coreos/etcd/releases/download/{{etcd_version}}/etcd-{{etcd_version}}-linux-amd64.tar.gz dest=/tmp/etcd-{{ etcd_version }}.tar.gz
+
+- name: unarchive etcd
+  unarchive: copy=no src=/tmp/etcd-{{ etcd_version }}.tar.gz dest=/tmp/
+
+# works on ansible 2.0
+#- name: copy etcd binary
+#  copy: remote_src=True src=/tmp/etcd-{{etcd_version}}-linux-amd64/{{item}} dest=/usr/bin/{{item}} mode=755
+#  with_items:
+#    - etcd
+#    - etcdctl
+
+- name: copy etcd binary
+  command: cp -f /tmp/etcd-{{etcd_version}}-linux-amd64/{{item}} /usr/bin/{{item}}
+  with_items:
+    - etcd
+    - etcdctl
+
+- name: chmod etcd binary
+  command: chmod 755 /usr/bin/{{item}}
+  with_items:
+    - etcd
+    - etcdctl
+
+- name: 'gen etcd-service.j2 to /usr/lib/systemd/system/etcd.service '
+  template: src=etcd-service.j2 dest=/usr/lib/systemd/system/etcd.service backup=yes
+  notify:
+    - reload systemd
+    - stop firewalld
+    - restart etcd
+
+- name: 'gen etcd-sysconfig.j2 to /etc/sysconfig/etcd '
+  template: src=etcd-sysconfig.j2 dest=/etc/sysconfig/etcd
+  notify:
+    - reload systemd
+    - stop firewalld
+    - restart etcd

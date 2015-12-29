@@ -1,0 +1,11 @@
+---
+# defaults file for etcd
+etcd_version: v2.2.2
+
+etcd_advertise_peer_addr: "{{ hostvars[inventory_hostname]['ansible_' + etcd_peer_iface]['ipv4']['address'] }}:{{ etcd_peer_port }}"
+etcd_advertise_peer_urls: "{{ etcd_peer_proto }}://{{ etcd_advertise_peer_addr }}"
+etcd_advertise_client_addr: "{{ hostvars[inventory_hostname]['ansible_' + etcd_client_iface]['ipv4']['address'] }}:{{ etcd_client_port }}"
+etcd_advertise_client_urls: "{{ etcd_client_proto }}://{{ etcd_advertise_client_addr }}"
+cluster_addr: "{% for host in groups['etcd'] %}{{ '%s=%s://%s:%s,'|format(host, hostvars[host]['etcd_peer_proto'], hostvars[host]['ansible_' + etcd_peer_iface]['ipv4']['address'], hostvars[host]['etcd_peer_port'] ) }}{% endfor %}"
+cluster_token: etcd-cluster
+cluster_state: new

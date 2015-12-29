@@ -1,0 +1,72 @@
+---
+
+- name: "system docker group create "
+  group: name=docker state=present system=yes
+  when: docker_create_group
+  tags:
+    - config
+  
+- name: "yum enabled docker repository "
+  template: src=docker-repo.j2 dest=/etc/yum.repos.d/docker.repo
+
+- name: "yum remove docker packages"
+  yum: >
+    name={{ item }}
+    state=absent
+  with_items:
+    - docker
+    - docker-selinux
+  ignore_errors: true
+
+- name: "yum install docker engine"
+  yum: name=docker-engine state=latest
+
+- name: "yum upgrade docker packages"
+  yum: >
+    name={{ item }}
+    state=latest
+  with_items:
+    - device-mapper
+    - bridge-utils
+  ignore_errors: true
+
+- name: "download pip"
+  get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
+
+- name: "yum install pip"
+  command: python /tmp/get-pip.py
+
+- name: "pip install [dockerpy, six]"
+  pip: >
+    name={{ item }}
+  with_items:
+    - six
+    - docker-py>=1.6.0
+
+- name: 'gen docker-service.j2 to /usr/lib/systemd/system/docker.service '
+  template: src=docker-service.j2 dest=/usr/lib/systemd/system/docker.service backup=yes
+  notify:
+    - reload systemd
+    - stop firewalld
+    - restart docker
+
+- name: 'gen docker-sysconfig.j2 to /etc/sysconfig/docker '
+  template: src=docker-sysconfig.j2 dest=/etc/sysconfig/docker
+  notify:
+    - reload systemd
+    - stop firewalld
+    - restart docker
+
+- name: 'gen docker-network-sysconfig.j2 to /etc/sysconfig/docker-network '
+  template: src=docker-network-sysconfig.j2 dest=/etc/sysconfig/docker-network
+  notify:
+    - reload systemd
+    - stop firewalld
+    - restart docker
+
+- name: 'gen docker-storage-sysconfig.j2 to /etc/sysconfig/docker-storage '
+  template: src=docker-storage-sysconfig.j2 dest=/etc/sysconfig/docker-storage
+  notify:
+    - reload systemd
+    - stop firewalld
+    - restart docker
