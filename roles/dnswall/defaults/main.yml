@@ -5,4 +5,4 @@ etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvar
 
 docker_url : "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['docker_iface']]['ipv4']['address'] }}:{{ hostvars[inventory_hostname]['docker_port'] }}"
 backend_patterns: "{% for pattern in hostvars[inventory_hostname]['dnswall_patterns'].split(',') %}{{ 'pattern=%s&'|format(pattern)}}{% endfor %}"
-backend: "{{etcd_cluster[:-1]}}/dnswall?{{backend_patterns}}"
+backend: "{{etcd_cluster[:-1]}}/dnswall?{{backend_networks}}"

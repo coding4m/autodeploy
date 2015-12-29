@@ -8,6 +8,7 @@ docker_iface=em1
 docker_port=2375
 
 dnswall_patterns=workplus.local
+proxywall_networks=overlay0
 
 [etcd]
 172.16.1.21

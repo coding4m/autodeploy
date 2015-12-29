@@ -1,5 +1,5 @@
 ---
-- name: "docker run swarm agent container"
+- name: "docker run swarm-agent container."
   docker:
     name: swarm-agent
     image: swarm:latest

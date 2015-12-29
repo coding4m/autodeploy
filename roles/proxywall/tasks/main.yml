@@ -1,2 +1,12 @@
 ---
 # tasks file for proxywall
+- name: "docker run proxywall-agent container. "
+  docker:
+    name: proxywall-agent
+    image: coding4m/proxywall-agent
+    pull: always
+    state: reloaded
+    restart_policy: always
+    volumes:
+    - /etc/localtime:/etc/localtime
+    command: -backend {{ backend }} -docker-url {{ docker_url }}

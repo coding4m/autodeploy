@@ -25,3 +25,4 @@
   roles:
     - docker-swarm
     - dnswall
+    - proxywall

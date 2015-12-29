@@ -1,7 +1,14 @@
 ---
 # tasks file for docker-swarm-manager
 
-- name: "docker run swarm container[master=true]. "
+- name: "initial docker networks[overlay0, overlay-apps]."
+  command: docker network create -d overlay {{item}}
+  with_items:
+    - 'overlay0'
+    - 'overlay-apps'
+  ignore_errors: true
+
+- name: "docker run swarm-master container. "
   docker:
     name: swarm-master
     image: swarm:latest
