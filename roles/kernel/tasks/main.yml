@@ -1,11 +1,11 @@
 ---
-- name: "import rpm-gpg-key"
+- name: "import rpm-gpg-key."
   rpm_key: key={{ elrepo_gpg_key }} state=present
 
-- name: "install elrepo rpm"
+- name: "install elrepo rpm."
   yum: name={{ elrepo_rpm }} state=present
 
-- name: "upgrade kernel"
+- name: "upgrade kernel."
   yum: >
       name={{ item }}
       enablerepo=elrepo-kernel
@@ -17,3 +17,7 @@
       - grub reset
       - reboot server
       - wait server
+
+#- name: "upgrade yum packages."
+#  yum: name=* state=latest
+#  ignore_errors: true
