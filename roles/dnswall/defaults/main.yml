@@ -1,7 +1,7 @@
 ---
 # defaults file for dnswall
 
-etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + etcd_client_iface]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
+etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + hostvars[host]['etcd_client_iface']]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
 
 docker_url : "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['docker_iface']]['ipv4']['address'] }}:{{ hostvars[inventory_hostname]['docker_port'] }}"
 backend_ops: "{{etcd_cluster[:-1]}}/dnswall"
