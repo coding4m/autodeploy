@@ -1,6 +1,6 @@
 ---
 
-etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + etcd_client_iface]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
+etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + hostvars[host]['etcd_client_iface']]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
 
 swarm_port: 7071
 swarm_admin_port: 7070
