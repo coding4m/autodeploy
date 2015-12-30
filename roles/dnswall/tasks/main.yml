@@ -17,12 +17,10 @@
 #    pull: always
     state: reloaded
     restart_policy: always
-    ports:
-    - "53:53/udp"
-    - "53:53/tcp"
+    net: host
     volumes:
     - /etc/localtime:/etc/localtime
-    command: -backend {{ backend_ops }} --patterns {{ dnswall_patterns }}
+    command: -backend {{ backend_ops }} --addr '{{ docker_host }}:53' --patterns {{ dnswall_patterns }}
 
 
 - name: "docker run dnswall-agent container. "
@@ -32,6 +30,7 @@
 #    pull: always
     state: reloaded
     restart_policy: always
+    net: host
     volumes:
     - /etc/localtime:/etc/localtime
     command: -backend {{ backend_ops }} -docker-url {{ docker_url }}

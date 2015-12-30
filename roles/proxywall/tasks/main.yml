@@ -16,6 +16,7 @@
 #    pull: always
     state: reloaded
     restart_policy: always
+    net: host
     volumes:
     - /etc/localtime:/etc/localtime
     command: -backend {{ backend_ops }} -docker-url {{ docker_url }}
