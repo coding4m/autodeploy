@@ -1,6 +1,6 @@
 ---
 labels:
-  zone: GZ
-  region: backend
+  region: gz
+  zone: workplus
+  cell: backend
   storage: sata
-  bandwidth: 1m
