@@ -1,6 +1,6 @@
 ---
 
-etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + etcd_client_iface]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
+etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + hostvars[host]['etcd_client_iface']]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
 
 docker_host: "{{ hostvars[inventory_hostname]['ansible_' + docker_iface]['ipv4']['address'] }}"
 docker_addr: "{{ docker_host }}:{{ docker_port }}"
@@ -13,4 +13,5 @@ os_version: "{{ ansible_lsb.release if ansible_lsb is defined else ansible_distr
 os_version_major: "{{ os_version | regex_replace('^([0-9]+)[^0-9]*.*', '\\\\1') }}"
 
 docker_create_group: true
-docker_yum_repo: "https://yum.dockerproject.org/repo/main/{{ ansible_distribution | lower }}/{{ os_version_major }}"
+#docker_yum_repo: "https://yum.dockerproject.org/repo/main/centos/7"
+docker_yum_repo: "https://yum.dockerproject.org/repo/main/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version }}"
