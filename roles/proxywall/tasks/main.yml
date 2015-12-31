@@ -17,6 +17,8 @@
     state: reloaded
     restart_policy: always
     net: host
+    env:
+      PROXYWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ proxywall_path }}"
+      PROXYWALL_DOCKER_URL: "{{ docker_url }}"
     volumes:
     - /etc/localtime:/etc/localtime
-    command: -backend {{ backend_ops }} -docker-url {{ docker_url }}

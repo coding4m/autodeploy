@@ -18,9 +18,12 @@
     state: reloaded
     restart_policy: always
     net: host
+    env:
+      DNSWALL_ADDR: "{{ docker_host }}:53"
+      DNSWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ dnswall_path }}"
+      DNSWALL_PATTERNS: "{{ dnswall_patterns }}"
     volumes:
     - /etc/localtime:/etc/localtime
-    command: -backend {{ backend_ops }} --addr '{{ docker_host }}:53' --patterns {{ dnswall_patterns }}
 
 
 - name: "docker run dnswall-agent container. "
@@ -31,6 +34,8 @@
     state: reloaded
     restart_policy: always
     net: host
+    env:
+      DNSWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ dnswall_path }}"
+      DNSWALL_DOCKER_URL: "{{ docker_url }}"
     volumes:
     - /etc/localtime:/etc/localtime
-    command: -backend {{ backend_ops }} -docker-url {{ docker_url }}

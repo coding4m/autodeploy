@@ -1,6 +1,0 @@
----
-labels:
-  region: gz
-  zone: workapps
-  cell: backend
-  storage: sata

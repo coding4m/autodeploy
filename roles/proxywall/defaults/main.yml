@@ -5,4 +5,3 @@ etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvar
 
 docker_host: "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['docker_iface']]['ipv4']['address'] }}"
 docker_url : "{{ docker_host }}:{{ hostvars[inventory_hostname]['docker_port'] }}"
-backend_ops: "{{etcd_cluster[:-1]}}/proxywall"

@@ -1,15 +1,12 @@
 [all]
-172.16.1.21 docker_bridge_network=192.168.1.1/24 swarm_master=true swarm_agent=true
-172.16.1.22 docker_bridge_network=192.168.2.1/24 swarm_master=false swarm_agent=true
-172.16.1.23 docker_bridge_network=192.168.3.1/24 swarm_master=false swarm_agent=true
-172.16.1.24 docker_bridge_network=192.168.4.1/24 swarm_master=false swarm_agent=true
+172.16.1.21
+172.16.1.22
+172.16.1.23
+172.16.1.24
 
 [all:vars]
 docker_iface=em1
 docker_port=2375
-
-dnswall_patterns=workplus.local
-proxywall_networks=overlay0
 
 [etcd]
 172.16.1.22

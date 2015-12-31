@@ -1,0 +1,15 @@
+{
+  "labels": {
+    "region": "gz",
+    "zone": "workapps",
+    "cell": "frontend",
+    "storage": "sata",
+    "bandwidth": "10m"
+  },
+  "docker_bridge_network": "192.168.4.1/24",
+  "dnswall_path": "workapps.local",
+  "dnswall_patterns": "workapps.local",
+  "proxywall_path": "workapps.io",
+  "proxywall_networks": "overlay-apps",
+  "swarm_master": "false"
+}

@@ -1,6 +1,0 @@
----
-labels:
-  region: gz
-  zone: workplus
-  cell: frontend
-  storage: sata

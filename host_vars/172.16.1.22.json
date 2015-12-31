@@ -1,0 +1,15 @@
+{
+  "labels": {
+    "region": "gz",
+    "zone": "workplus",
+    "cell": "backend",
+    "storage": "sata",
+    "bandwidth": "10m"
+  },
+  "docker_bridge_network": "192.168.2.1/24",
+  "dnswall_path": "workplus.local",
+  "dnswall_patterns": "workplus.local",
+  "proxywall_path": "workplus.io",
+  "proxywall_networks": "overlay0",
+  "swarm_master": "false"
+}

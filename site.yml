@@ -1,28 +1,27 @@
 ---
 
+#- hosts: all
+#  user: root
+#
+#  roles:
+#    - kernel
+#
+#- hosts: etcd
+#  user: root
+#
+#  roles:
+#    - etcd
+#
+#- hosts: all
+#  user: root
+#
+#  roles:
+#    - docker-engine
 
 - hosts: all
   user: root
 
   roles:
-    - kernel
-
-- hosts: etcd
-  user: root
-
-  roles:
-    - etcd
-
-- hosts: all
-  user: root
-
-  roles:
-    - docker-engine
-
-- hosts: all
-  user: root
-
-  roles:
-    - docker-swarm
-    - dnswall
+#    - docker-swarm
+#    - dnswall
     - proxywall
