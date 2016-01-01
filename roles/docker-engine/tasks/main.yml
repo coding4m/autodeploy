@@ -46,27 +46,27 @@
 - name: 'gen docker-service.j2 to /usr/lib/systemd/system/docker.service '
   template: src=docker-service.j2 dest=/usr/lib/systemd/system/docker.service backup=yes
   notify:
-    - reload systemd
     - stop firewalld
+    - reload systemd
     - restart docker
 
 - name: 'gen docker-sysconfig.j2 to /etc/sysconfig/docker '
   template: src=docker-sysconfig.j2 dest=/etc/sysconfig/docker
   notify:
-    - reload systemd
     - stop firewalld
+    - reload systemd
     - restart docker
 
 - name: 'gen docker-network-sysconfig.j2 to /etc/sysconfig/docker-network '
   template: src=docker-network-sysconfig.j2 dest=/etc/sysconfig/docker-network
   notify:
-    - reload systemd
     - stop firewalld
+    - reload systemd
     - restart docker
 
 - name: 'gen docker-storage-sysconfig.j2 to /etc/sysconfig/docker-storage '
   template: src=docker-storage-sysconfig.j2 dest=/etc/sysconfig/docker-storage
   notify:
-    - reload systemd
     - stop firewalld
+    - reload systemd
     - restart docker

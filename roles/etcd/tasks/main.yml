@@ -33,13 +33,13 @@
 - name: 'gen etcd-service.j2 to /usr/lib/systemd/system/etcd.service '
   template: src=etcd-service.j2 dest=/usr/lib/systemd/system/etcd.service backup=yes
   notify:
-    - reload systemd
     - stop firewalld
+    - reload systemd
     - restart etcd
 
 - name: 'gen etcd-sysconfig.j2 to /etc/sysconfig/etcd '
   template: src=etcd-sysconfig.j2 dest=/etc/sysconfig/etcd
   notify:
-    - reload systemd
     - stop firewalld
+    - reload systemd
     - restart etcd
