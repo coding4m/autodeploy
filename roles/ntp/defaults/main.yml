@@ -1,0 +1,5 @@
+---
+# defaults file for ntp
+
+
+ntp_server: "133.100.11.8"

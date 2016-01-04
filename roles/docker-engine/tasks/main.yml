@@ -16,6 +16,7 @@
   with_items:
     - docker
     - docker-selinux
+    - lvm2
   ignore_errors: true
 
 - name: "yum install docker engine"
