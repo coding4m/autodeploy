@@ -1,6 +1,6 @@
 ---
 - name: grub reset
-  command: grub2-set-default 1
+  command: grub2-set-default 0
 
 - name: reboot server
   shell: reboot
