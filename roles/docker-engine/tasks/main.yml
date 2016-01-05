@@ -16,20 +16,19 @@
   with_items:
     - docker
     - docker-selinux
-    - lvm2
   ignore_errors: true
 
 - name: "yum install docker engine"
   yum: name=docker-engine state=latest
 
-- name: "yum upgrade docker packages"
-  yum: >
-    name={{ item }}
-    state=latest
-  with_items:
-    - device-mapper
-    - bridge-utils
-  ignore_errors: true
+#- name: "yum upgrade docker packages"
+#  yum: >
+#    name={{ item }}
+#    state=latest
+#  with_items:
+#    - device-mapper
+#    - bridge-utils
+#  ignore_errors: true
 
 - name: "download pip"
   get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py

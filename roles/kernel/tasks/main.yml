@@ -1,4 +1,12 @@
 ---
+
+- name: "upgrade yum packages."
+  yum: name=* state=latest
+  notify:
+      - grub reset
+      - reboot server
+      - wait server
+
 - name: "import rpm-gpg-key."
   rpm_key: key={{ elrepo_gpg_key }} state=present
 
@@ -11,13 +19,9 @@
       enablerepo=elrepo-kernel
       state=present
   with_items:
-    - kernel-ml-devel
     - kernel-ml
+    - kernel-ml-devel
   notify:
       - grub reset
       - reboot server
       - wait server
-
-#- name: "upgrade yum packages."
-#  yum: name=* state=latest
-#  ignore_errors: true
