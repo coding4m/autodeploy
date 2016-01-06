@@ -1,0 +1,18 @@
+proxywall-daemon:
+
+  container_name: proxywall-daemon
+  image: coding4m/proxywall-daemon
+
+  net: overlay0
+  ports:
+    - "80:80"
+    - "443:443"
+
+  labels:
+    _service_: "io.workplus"
+  environment:
+    - "constraint:region==gz"
+    - "constraint:zone==workplus"
+    - "constraint:cell==frontend"
+    - "PROXYWALL_BACKEND=etcd://172.16.1.22:2379,172.16.1.23:2379,172.16.1.24:2379/workplus.io"
+    - "PROXYWALL_NETWORKS=overlay0"
