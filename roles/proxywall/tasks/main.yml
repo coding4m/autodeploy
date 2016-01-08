@@ -3,10 +3,11 @@
 
 # ansible docker module pull image exists bug, use command pull instead
 
-- name: "docker pull [proxywall-agent] images."
+- name: "docker pull [proxywall-agent, proxywall-daemon] images."
   command: docker pull {{item}}
   with_items:
     - 'coding4m/proxywall-agent'
+    - 'coding4m/proxywall-daemon'
   ignore_errors: true
 
 - name: "docker run proxywall-agent container. "
