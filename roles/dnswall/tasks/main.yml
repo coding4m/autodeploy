@@ -23,7 +23,7 @@
       DNSWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ dnswall_path }}"
       DNSWALL_PATTERNS: "{{ dnswall_patterns }}"
     volumes:
-    - /etc/localtime:/etc/localtime
+      - /etc/localtime:/etc/localtime:ro
 
 
 - name: "docker run dnswall-agent container. "
@@ -38,4 +38,4 @@
       DNSWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ dnswall_path }}"
       DNSWALL_DOCKER_URL: "{{ docker_url }}"
     volumes:
-    - /etc/localtime:/etc/localtime
+      - /etc/localtime:/etc/localtime:ro

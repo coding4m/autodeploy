@@ -10,6 +10,8 @@ proxywall-workplus:
 
   labels:
     _service_: "io.workplus"
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
   environment:
     - "constraint:region==gz"
     - "constraint:zone==workplus"
@@ -29,6 +31,8 @@ proxywall-workapps:
 
   labels:
     _service_: "io.workapps"
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
   environment:
     - "constraint:region==gz"
     - "constraint:zone==workapps"

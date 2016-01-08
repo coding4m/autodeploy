@@ -15,5 +15,5 @@
     state: reloaded
     restart_policy: always
     volumes:
-    - /etc/localtime:/etc/localtime
+    - /etc/localtime:/etc/localtime:ro
     command: join --addr {{swarm_docker}} {{swarm_cluster}}

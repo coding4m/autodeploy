@@ -22,4 +22,4 @@
       PROXYWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ proxywall_path }}"
       PROXYWALL_DOCKER_URL: "{{ docker_url }}"
     volumes:
-    - /etc/localtime:/etc/localtime
+      - /etc/localtime:/etc/localtime:ro
