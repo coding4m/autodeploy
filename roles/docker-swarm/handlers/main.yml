@@ -1,2 +1,16 @@
 ---
 # handlers file for docker-swarm-agent
+- name: start firewalld
+  service: name=firewalld state=started enabled=yes
+  ignore_errors: true
+
+- name: allow swarm-master traffics
+  firewalld: immediate=yes zone=internal port={{ item }}/tcp permanent=true state=enabled
+  with_items:
+    - "{{ swarm_port }}"
+
+- name: reload firewalld
+  command: firewall-cmd --reload
+
+- name: restart docker
+  service: name=docker state=restarted enabled=yes sleep=5

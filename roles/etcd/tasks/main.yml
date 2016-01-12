@@ -5,11 +5,17 @@
 - name: install tar
   yum: name=tar state=present
 
+#- name: download etcd
+#  get_url: url=https://github.com/coreos/etcd/releases/download/{{etcd_version}}/etcd-{{etcd_version}}-linux-amd64.tar.gz dest=/tmp/etcd-{{ etcd_version }}.tar.gz
+#
+#- name: unarchive etcd
+#  unarchive: copy=no src=/tmp/etcd-{{ etcd_version }}.tar.gz dest=/tmp/
+
 - name: download etcd
-  get_url: url=https://github.com/coreos/etcd/releases/download/{{etcd_version}}/etcd-{{etcd_version}}-linux-amd64.tar.gz dest=/tmp/etcd-{{ etcd_version }}.tar.gz
+  copy: src=etcd-{{etcd_version}}-linux-amd64.tar.gz dest=/tmp/
 
 - name: unarchive etcd
-  unarchive: copy=no src=/tmp/etcd-{{ etcd_version }}.tar.gz dest=/tmp/
+  unarchive: copy=no src=/tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz dest=/tmp/
 
 # works on ansible 2.0
 #- name: copy etcd binary
@@ -33,13 +39,19 @@
 - name: 'gen etcd-service.j2 to /usr/lib/systemd/system/etcd.service '
   template: src=etcd-service.j2 dest=/usr/lib/systemd/system/etcd.service backup=yes
   notify:
-    - stop firewalld
+    - start firewalld
+    - allow etcd ifaces
+    - allow etcd traffics
+    - reload firewalld
     - reload systemd
     - restart etcd
 
 - name: 'gen etcd-sysconfig.j2 to /etc/sysconfig/etcd '
   template: src=etcd-sysconfig.j2 dest=/etc/sysconfig/etcd
   notify:
-    - stop firewalld
+    - start firewalld
+    - allow etcd ifaces
+    - allow etcd traffics
+    - reload firewalld
     - reload systemd
     - restart etcd

@@ -1,8 +1,30 @@
 ---
 
-- name: stop firewalld
-  service: name=firewalld state=stopped enabled=no sleep=5
+- name: start firewalld
+  service: name=firewalld state=started enabled=yes
   ignore_errors: true
+
+- name: allow docker ifaces
+  command: firewall-cmd --zone=internal --add-interface={{ item }}
+  with_items:
+    - lo
+    - docker0
+    - "{{ docker_iface }}"
+
+- name: allow docker traffics
+  firewalld: immediate=yes zone=internal port={{ item }}/tcp permanent=true state=enabled
+  with_items:
+    - "{{ docker_port }}"
+
+- name: allow docker overlay traffics
+  firewalld: immediate=yes zone=internal port={{ item.port }}/{{ item.proto }} permanent=true state=enabled
+  with_items:
+    - { port: 4789, proto: 'udp'}
+    - { port: 7946, proto: 'udp'}
+    - { port: 7946, proto: 'tcp'}
+
+- name: reload firewalld
+  command: firewall-cmd --reload
 
 - name: reload systemd
   command: systemctl daemon-reload

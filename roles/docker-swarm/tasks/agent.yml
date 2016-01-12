@@ -1,11 +1,6 @@
 ---
 
 # ansible docker module pull image exists bug, use command pull instead
-- name: "docker pull [swarm] images."
-  command: docker pull {{item}}
-  with_items:
-    - 'swarm:latest'
-  ignore_errors: true
 
 - name: "docker run swarm-agent container."
   docker:

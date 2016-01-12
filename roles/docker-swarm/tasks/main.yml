@@ -1,5 +1,11 @@
 ---
 
+- name: "docker pull [swarm] images."
+  command: docker pull {{item}}
+  with_items:
+    - 'swarm:latest'
+  ignore_errors: true
+
 - include: master.yml
   when: swarm_master == "true"
 

@@ -24,6 +24,11 @@
       DNSWALL_PATTERNS: "{{ dnswall_patterns }}"
     volumes:
       - /etc/localtime:/etc/localtime:ro
+  notify:
+      - start firewalld
+      - allow dnswall-daemon traffics
+      - reload firewalld
+      - restart docker
 
 
 - name: "docker run dnswall-agent container. "

@@ -10,12 +10,6 @@
 
 # ansible docker module pull image exists bug, use command pull instead
 
-- name: "docker pull [swarm] images."
-  command: docker pull {{item}}
-  with_items:
-    - 'swarm:latest'
-  ignore_errors: true
-
 - name: "docker run swarm-master container. "
   docker:
     name: swarm-master
@@ -28,6 +22,11 @@
     volumes:
     - /etc/localtime:/etc/localtime:ro
     command: manage --addr {{swarm_addr}} {{swarm_cluster}}
+  notify:
+    - start firewalld
+    - allow swarm-master traffics
+    - reload firewalld
+    - restart docker
 
 #- name: "docker run rethinkdb container. "
 #  docker:

@@ -1,6 +1,6 @@
 ---
 # defaults file for etcd
-etcd_version: v2.2.2
+etcd_version: v2.2.3
 
 etcd_advertise_peer_addr: "{{ hostvars[inventory_hostname]['ansible_' + etcd_peer_iface]['ipv4']['address'] }}:{{ etcd_peer_port }}"
 etcd_advertise_peer_urls: "{{ etcd_peer_proto }}://{{ etcd_advertise_peer_addr }}"

@@ -1,0 +1,17 @@
+---
+
+- name: start firewalld
+  service: name=firewalld state=started enabled=yes
+  ignore_errors: true
+
+- name: allow dnswall-daemon traffics
+  firewalld: immediate=yes zone=internal port={{ item.port }}/{{ item.proto }} permanent=true state=enabled
+  with_items:
+    - { port: 53, proto: 'udp'}
+    - { port: 53, proto: 'tcp'}
+
+- name: reload firewalld
+  command: firewall-cmd --reload
+
+- name: restart docker
+  service: name=docker state=restarted enabled=yes sleep=5
