@@ -18,7 +18,7 @@
     state: reloaded
     restart_policy: always
     ports:
-    - "{{swarm_port}}:2375"
+    - "{{swarm_host}}:{{swarm_port}}:2375"
     volumes:
     - /etc/localtime:/etc/localtime:ro
     command: manage --addr {{swarm_addr}} {{swarm_cluster}}
