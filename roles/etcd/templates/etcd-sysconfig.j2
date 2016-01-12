@@ -3,7 +3,6 @@ ETCD_DATA_DIR=/var/lib/etcd-{{ inventory_hostname }}
 ETCD_LISTEN_PEER_URLS="{{ etcd_advertise_peer_urls }}"
 ETCD_LISTEN_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
 
-
 ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
 ETCD_INITIAL_ADVERTISE_PEER_URLS="{{ etcd_advertise_peer_urls }}"
 ETCD_INITIAL_CLUSTER="{{ cluster_addr[:-1] }}"
