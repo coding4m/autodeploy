@@ -5,7 +5,7 @@
   ignore_errors: true
 
 - name: allow dnswall-daemon traffics
-  firewalld: immediate=yes zone=internal port={{ item.port }}/{{ item.proto }} permanent=true state=enabled
+  firewalld: immediate=yes zone=internal port={{ item.port }}/{{ item.proto }} permanent=yes state=enabled
   with_items:
     - { port: 53, proto: 'udp'}
     - { port: 53, proto: 'tcp'}

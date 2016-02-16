@@ -1,0 +1,7 @@
+---
+# defaults file for kernel
+os_version: "{{ ansible_lsb.release if ansible_lsb is defined else ansible_distribution_version }}"
+os_version_major: "{{ os_version | regex_replace('^([0-9]+)[^0-9]*.*', '\\\\1') }}"
+
+elrepo_gpg_key: "https://www.elrepo.org/RPM-GPG-KEY-elrepo.org"
+elrepo_rpm: "http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm"

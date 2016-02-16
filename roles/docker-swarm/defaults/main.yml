@@ -1,11 +1,7 @@
 ---
 
-etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + hostvars[host]['etcd_client_iface']]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
+etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + hostvars[host]['etcd_settings']['client_iface']]['ipv4']['address'], hostvars[host]['etcd_settings']['client_port'] ) }}{% endfor %}"
 
-swarm_port: 7071
-swarm_admin_port: 7070
-
-swarm_host: "{{ hostvars[inventory_hostname]['ansible_' + hostvars[inventory_hostname]['docker_iface']]['ipv4']['address'] }}"
-swarm_docker: "{{ swarm_host }}:{{ hostvars[inventory_hostname]['docker_port'] }}"
-swarm_addr: "{{ swarm_host }}:{{swarm_port}}"
+swarm_host: "{{ hostvars[inventory_hostname]['ansible_' + docker_settings.expose_iface]['ipv4']['address'] }}"
+swarm_advertise_addr: "{{ swarm_host }}:{{docker_settings.expose_port}}"
 swarm_cluster: "{{etcd_cluster[:-1]}}"

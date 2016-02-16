@@ -4,24 +4,25 @@
 #  user: root
 #
 #  roles:
-#    - kernel
-#
-#- hosts: etcd
-#  user: root
-#
-#  roles:
-#    - etcd
-#
-#- hosts: all
-#  user: root
-#
-#  roles:
-#    - docker-engine
+#    - setup
+#    - ntp
+
+- hosts: etcd
+  user: root
+
+  roles:
+    - etcd
 
 - hosts: all
   user: root
 
   roles:
-#    - docker-swarm
-#    - dnswall
+    - docker-engine
+
+- hosts: all
+  user: root
+
+  roles:
+    - docker-swarm
+    - dnswall
     - proxywall

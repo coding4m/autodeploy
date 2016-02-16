@@ -5,25 +5,24 @@
   ignore_errors: true
 
 - name: allow docker ifaces
-  command: firewall-cmd --zone=internal --change-interface={{ item }}
+  command: firewall-cmd --permanent --zone={{ docker_settings.expose_zone }} --change-interface={{ item }}
   with_items:
-    - lo
     - docker0
-    - "{{ docker_iface }}"
+    - "{{ docker_settings.expose_iface }}"
   ignore_errors: true
 
 - name: allow docker traffics
-  firewalld: immediate=yes zone=internal port={{ item }}/tcp permanent=true state=enabled
+  firewalld: immediate=yes zone={{ docker_settings.expose_zone }} port={{ item }}/tcp permanent=yes state=enabled
   with_items:
-    - "{{ docker_port }}"
+    - "{{ docker_settings.expose_port }}"
   ignore_errors: true
 
 - name: allow docker overlay traffics
-  firewalld: immediate=yes zone=internal port={{ item.port }}/{{ item.proto }} permanent=true state=enabled
+  firewalld: immediate=yes zone={{ docker_settings.expose_zone }} source={{ item.source }} port={{ item.port }}/{{ item.proto }} permanent=yes state=enabled
   with_items:
-    - { port: 4789, proto: 'udp'}
-    - { port: 7946, proto: 'udp'}
-    - { port: 7946, proto: 'tcp'}
+    - { source: "{{docker_iface_network}}/{{docker_iface_netmask}}", port: 4789, proto: 'udp'}
+    - { source: "{{docker_iface_network}}/{{docker_iface_netmask}}", port: 7946, proto: 'udp'}
+    - { source: "{{docker_iface_network}}/{{docker_iface_netmask}}", port: 7946, proto: 'tcp'}
   ignore_errors: true
 
 - name: reload firewalld

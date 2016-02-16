@@ -1,13 +1,16 @@
 ---
 
-etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + hostvars[host]['etcd_client_iface']]['ipv4']['address'], hostvars[host]['etcd_client_port'] ) }}{% endfor %}"
+etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + hostvars[host]['etcd_settings']['client_iface']]['ipv4']['address'], hostvars[host]['etcd_settings']['client_port'] ) }}{% endfor %}"
 
-docker_host: "{{ hostvars[inventory_hostname]['ansible_' + docker_iface]['ipv4']['address'] }}"
-docker_addr: "{{ docker_host }}:{{ docker_port }}"
-docker_cluster: "--cluster-store={{etcd_cluster[:-1]}} --cluster-advertise={{docker_addr}}"
+docker_iface_network: "{{ hostvars[inventory_hostname]['ansible_' + docker_settings.expose_iface]['ipv4']['network'] }}"
+docker_iface_netmask: "{{ hostvars[inventory_hostname]['ansible_' + docker_settings.expose_iface]['ipv4']['netmask'] | ipaddr('prefix') }}"
 
-docker_labels: '{% for key,value in hostvars[inventory_hostname].get("labels", {}).items() %}{{ "--label %s=%s "|format(key,value)}}{% endfor %}'
-docker_opts: ' -H tcp://{{docker_addr}} -H unix:///var/run/docker.sock --dns {{ docker_host }} {{docker_cluster}} {{docker_labels}} --selinux-enabled '
+docker_addr: "{{ hostvars[inventory_hostname]['ansible_' + docker_settings.expose_iface]['ipv4']['address'] }}"
+docker_advertise_addr: "{{ docker_addr }}:{{ docker_settings.expose_port }}"
+docker_cluster: "--cluster-store={{etcd_cluster[:-1]}} --cluster-advertise={{docker_advertise_addr}}"
+
+docker_labels: '{% for key,value in docker_settings.labels.items() %}{{ "--label %s=%s "|format(key,value)}}{% endfor %}'
+docker_opts: ' -H tcp://{{docker_advertise_addr}} -H unix:///var/run/docker.sock --dns {{ docker_addr }} {{docker_cluster}} {{docker_labels}} --selinux-enabled '
 
 os_version: "{{ ansible_lsb.release if ansible_lsb is defined else ansible_distribution_version }}"
 os_version_major: "{{ os_version | regex_replace('^([0-9]+)[^0-9]*.*', '\\\\1') }}"

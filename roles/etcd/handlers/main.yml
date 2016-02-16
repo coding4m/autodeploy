@@ -6,19 +6,16 @@
   ignore_errors: true
 
 - name: allow etcd ifaces
-  command: firewall-cmd --zone=internal --change-interface={{ item }}
+  command: firewall-cmd --permanent --zone={{ item.zone }} --change-interface={{ item.iface }}
   with_items:
-    - lo
-    - "{{ etcd_peer_iface }}"
-    - "{{ etcd_client_iface }}"
-  ignore_errors: true
+    - {zone: "{{etcd_settings.peer_zone}}", iface: "{{ etcd_settings.peer_iface }}"}
+    - {zone: "{{etcd_settings.client_zone}}", iface: "{{ etcd_settings.client_iface }}"}
 
 - name: allow etcd traffics
-  firewalld: immediate=yes zone=internal port={{ item }}/tcp permanent=true state=enabled
+  firewalld: immediate=yes zone={{ item.zone }} source={{item.source}} port={{ item.port }}/tcp permanent=true state=enabled
   with_items:
-    - "{{ etcd_peer_port }}"
-    - "{{ etcd_client_port }}"
-  ignore_errors: true
+    - {source : "{{etcd_peer_network}}/{{etcd_peer_netmask}}", zone: "{{etcd_settings.peer_zone}}", port : "{{etcd_settings.peer_port}}"}
+    - {source : "{{etcd_client_network}}/{{etcd_client_netmask}}", zone: "{{etcd_settings.client_zone}}", port : "{{etcd_settings.client_port}}"}
 
 - name: reload firewalld
   command: firewall-cmd --reload
