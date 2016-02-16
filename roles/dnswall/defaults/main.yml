@@ -3,4 +3,5 @@
 
 etcd_cluster: "etcd://{% for host in groups['etcd'] %}{{ '%s:%s,'|format(hostvars[host]['ansible_' + hostvars[host]['etcd_settings']['client_iface']]['ipv4']['address'], hostvars[host]['etcd_settings']['client_port'] ) }}{% endfor %}"
 
-docker_endpoint : "{{ hostvars[inventory_hostname]['ansible_' + docker_settings.expose_iface]['ipv4']['address'] }}:{{ docker_settings.expose_port }}"
+docker_host: "{{ hostvars[inventory_hostname]['ansible_' + docker_settings.expose_iface]['ipv4']['address'] }}"
+docker_endpoint : "{{ docker_host }}:{{ docker_settings.expose_port }}"
