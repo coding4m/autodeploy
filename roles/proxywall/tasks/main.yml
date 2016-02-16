@@ -14,12 +14,12 @@
   docker:
     name: proxywall-agent
     image: coding4m/proxywall-agent
-#    pull: always
+    pull: always
     state: reloaded
     restart_policy: always
     net: host
     env:
-      PROXYWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ proxywall_path }}"
-      PROXYWALL_DOCKER_URL: "{{ docker_url }}"
+      PROXYWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ proxy_settings.path }}"
+      PROXYWALL_DOCKER_URL: "{{ docker_endpoint }}"
     volumes:
       - /etc/localtime:/etc/localtime:ro

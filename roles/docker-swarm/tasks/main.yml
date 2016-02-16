@@ -7,6 +7,6 @@
   ignore_errors: true
 
 - include: master.yml
-  when: swarm_master == "true"
+  when: swarm_settings.is_admin == "true"
 
 - include: agent.yml

@@ -6,7 +6,8 @@
   ignore_errors: true
 
 - name: allow etcd ifaces
-  command: firewall-cmd --permanent --zone={{ item.zone }} --change-interface={{ item.iface }}
+  command: firewall-cmd
+   --zone={{ item.zone }} --change-interface={{ item.iface }}
   with_items:
     - {zone: "{{etcd_settings.peer_zone}}", iface: "{{ etcd_settings.peer_iface }}"}
     - {zone: "{{etcd_settings.client_zone}}", iface: "{{ etcd_settings.client_iface }}"}

@@ -14,33 +14,33 @@
   docker:
     name: dnswall-daemon
     image: coding4m/dnswall-daemon
-#    pull: always
+    pull: always
     state: reloaded
     restart_policy: always
     net: host
     env:
       DNSWALL_ADDR: "{{ docker_host }}:53"
-      DNSWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ dnswall_path }}"
-      DNSWALL_PATTERNS: "{{ dnswall_patterns }}"
+      DNSWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ dns_settings.path }}"
+      DNSWALL_PATTERNS: "{{ dns_settings.patterns }}"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-  notify:
-      - start firewalld
-      - allow dnswall-daemon traffics
-      - reload firewalld
-      - restart docker
+#  notify:
+#      - start firewalld
+#      - allow dnswall-daemon traffics
+#      - reload firewalld
+#      - restart docker
 
 
 - name: "docker run dnswall-agent container. "
   docker:
     name: dnswall-agent
     image: coding4m/dnswall-agent
-#    pull: always
+    pull: always
     state: reloaded
     restart_policy: always
     net: host
     env:
-      DNSWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ dnswall_path }}"
-      DNSWALL_DOCKER_URL: "{{ docker_url }}"
+      DNSWALL_BACKEND: "{{ etcd_cluster[:-1] }}/{{ dns_settings.path }}"
+      DNSWALL_DOCKER_URL: "{{ docker_endpoint }}"
     volumes:
       - /etc/localtime:/etc/localtime:ro
