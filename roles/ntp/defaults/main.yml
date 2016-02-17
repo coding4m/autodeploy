@@ -1,5 +1,0 @@
----
-# defaults file for ntp
-
-
-ntp_server: "cn.pool.ntp.org"

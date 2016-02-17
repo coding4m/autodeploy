@@ -1,9 +1,8 @@
 ---
 
-- name: "upgrade yum packages."
+- name: "yum ungrade"
   yum: name=* state=latest
   notify:
-#      - grub reset
       - reboot server
       - wait server
 
@@ -25,3 +24,36 @@
 #      - grub reset
 #      - reboot server
 #      - wait server
+
+- name: "yum install [bind-utils, bridge-utils]"
+  yum: >
+    name={{ item }}
+    state=latest
+  with_items:
+    - bind-utils
+    - bridge-utils
+  ignore_errors: true
+
+- name: "yum install ntpdate"
+  yum:  name=ntpdate state=installed
+
+- name: "ntpdate sync date"
+  command: "ntpdate {{ ntp_server }}"
+  ignore_errors: true
+
+- name: "cron ntpdate sync date"
+  cron: name="auto sync date" minute="*/30" job="ntpdate {{ ntp_server }} > /dev/null" backup=yes
+
+- name: "download pip"
+  get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
+
+- name: "install pip"
+  command: python /tmp/get-pip.py
+
+- name: "pip install [six, netaddr, docker-py]"
+  pip: >
+    name={{ item }}
+  with_items:
+    - six
+    - netaddr
+    - docker-py>=1.6.0
